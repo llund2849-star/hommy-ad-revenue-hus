@@ -1,15 +1,20 @@
-# hommy-ad-revenue-hus<script type="module">
+
+<script type="module">
 import { createClient } from
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// Supabase Dashboard se apna Project URL copy karein
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+// Supabase Project URL
+const SUPABASE_URL =
+  'https://znccyqxrhwipdxgcmpok.supabase.co';
 
-// Aapki Publishable Key
+// Supabase Publishable Key
 const SUPABASE_KEY =
   'sb_publishable_OQo9Nq9T4RnFVoSF2TT4RQ_VOP95YuJ';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 const status = document.getElementById('authStatus');
 const signup = document.getElementById('signup');
@@ -17,10 +22,12 @@ const login = document.getElementById('login');
 const logout = document.getElementById('logout');
 
 async function refreshSession() {
-  const { data, error } = await supabase.auth.getSession();
+  const { data, error } =
+    await supabase.auth.getSession();
 
   if (error) {
-    status.textContent = 'Session check failed. Please refresh.';
+    status.textContent =
+      'Session check failed. Please refresh.';
     return;
   }
 
@@ -36,9 +43,12 @@ async function refreshSession() {
 }
 
 signup.addEventListener('click', async () => {
-  const name = document.getElementById('displayName').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+  const name =
+    document.getElementById('displayName').value.trim();
+  const email =
+    document.getElementById('email').value.trim();
+  const password =
+    document.getElementById('password').value;
 
   if (!name || !email || password.length < 8) {
     status.textContent =
@@ -50,11 +60,14 @@ signup.addEventListener('click', async () => {
   status.textContent = 'Creating account...';
 
   try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { display_name: name } }
-    });
+    const { data, error } =
+      await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { display_name: name }
+        }
+      });
 
     if (error) throw error;
 
@@ -64,38 +77,44 @@ signup.addEventListener('click', async () => {
 
     await refreshSession();
   } catch (error) {
-    status.textContent = error.message || 'Signup failed.';
+    status.textContent =
+      error.message || 'Signup failed.';
   } finally {
     signup.disabled = false;
   }
 });
 
 login.addEventListener('click', async () => {
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+  const email =
+    document.getElementById('email').value.trim();
+  const password =
+    document.getElementById('password').value;
 
   login.disabled = true;
   status.textContent = 'Logging in...';
 
   try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    const { error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
     if (error) throw error;
 
     status.textContent = 'Login successful!';
     await refreshSession();
   } catch (error) {
-    status.textContent = error.message || 'Login failed.';
+    status.textContent =
+      error.message || 'Login failed.';
   } finally {
     login.disabled = false;
   }
 });
 
 logout.addEventListener('click', async () => {
-  const { error } = await supabase.auth.signOut();
+  const { error } =
+    await supabase.auth.signOut();
 
   status.textContent = error
     ? error.message
